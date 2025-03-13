@@ -1,9 +1,10 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const CampaignDetails = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [campaignData, setCampaignData] = useState({
     name: "",
     type: "",
@@ -13,6 +14,48 @@ const CampaignDetails = () => {
     description: "",
     image: null,
   });
+
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!campaignData.name.trim()) {
+      newErrors.name = "Campaign name is required.";
+    }
+
+    if (!campaignData.type.trim()) {
+      newErrors.type = "Campaign type is required.";
+    }
+
+    if (!campaignData.beginDate) {
+      newErrors.beginDate = "Begin date is required.";
+    }
+
+    if (!campaignData.endDate) {
+      newErrors.endDate = "End date is required.";
+    } else if (campaignData.beginDate && campaignData.endDate < campaignData.beginDate) {
+      newErrors.endDate = "End date cannot be before begin date.";
+    }
+
+    if (!campaignData.status) {
+      newErrors.status = "Please select a status.";
+    }
+
+    if (!campaignData.description.trim()) {
+      newErrors.description = "Description is required.";
+    }
+
+    if (campaignData.image) {
+      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
+      if (!allowedTypes.includes(campaignData.image.type)) {
+        newErrors.image = "Only JPG and PNG files are allowed.";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,24 +69,25 @@ const CampaignDetails = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Logic for adding the campaign, such as sending the data to an API or updating state
-    console.log("Campaign Data Submitted:", campaignData);
-    alert("Campaign details add successfully!");
-
-    // Reset form after submission
-    setCampaignData({
-      name: "",
-      type: "",
-      beginDate: "",
-      endDate: "",
-      status: "",
-      description: "",
-      image: null,
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (validateForm()) {
+    const formData = new FormData();
+    Object.entries(campaignData).forEach(([key, value]) => {
+      formData.append(key, value);
     });
-    navigate('/campaign')
-  };
+
+    try {
+      await axios.post("http://localhost:3000/campaigns", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      alert("Campaign added successfully!");
+      navigate("/campaign"); // Redirect after success
+    } catch (error) {
+      console.error("Error adding campaign:", error);
+    }
+  }
+};
 
   return (
     <Container className="p-4">
@@ -59,8 +103,10 @@ const CampaignDetails = () => {
                 value={campaignData.name}
                 onChange={handleChange}
                 placeholder="Enter campaign name"
-                required
+               
+                isInvalid={!!errors.name}
               />
+              <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -72,8 +118,10 @@ const CampaignDetails = () => {
                 value={campaignData.type}
                 onChange={handleChange}
                 placeholder="Enter campaign type"
-                required
+                
+                isInvalid={!!errors.type}
               />
+              <Form.Control.Feedback type="invalid">{errors.type}</Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
@@ -87,8 +135,10 @@ const CampaignDetails = () => {
                 name="beginDate"
                 value={campaignData.beginDate}
                 onChange={handleChange}
-                required
+                
+                isInvalid={!!errors.beginDate}
               />
+              <Form.Control.Feedback type="invalid">{errors.beginDate}</Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -99,8 +149,10 @@ const CampaignDetails = () => {
                 name="endDate"
                 value={campaignData.endDate}
                 onChange={handleChange}
-                required
+                
+                isInvalid={!!errors.endDate}
               />
+              <Form.Control.Feedback type="invalid">{errors.endDate}</Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
@@ -113,13 +165,15 @@ const CampaignDetails = () => {
                 name="status"
                 value={campaignData.status}
                 onChange={handleChange}
-                required
+                
+                isInvalid={!!errors.status}
               >
                 <option value="">Select Status</option>
                 <option value="Active">Active</option>
                 <option value="Planned">Planned</option>
                 <option value="Completed">Completed</option>
               </Form.Select>
+              <Form.Control.Feedback type="invalid">{errors.status}</Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -130,7 +184,9 @@ const CampaignDetails = () => {
                 accept="image/*"
                 name="image"
                 onChange={handleImageChange}
+                isInvalid={!!errors.image}
               />
+              <Form.Control.Feedback type="invalid">{errors.image}</Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
@@ -146,8 +202,10 @@ const CampaignDetails = () => {
                 value={campaignData.description}
                 onChange={handleChange}
                 placeholder="Enter a brief description of the campaign"
-                required
+                
+                isInvalid={!!errors.description}
               />
+              <Form.Control.Feedback type="invalid">{errors.description}</Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>

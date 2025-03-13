@@ -1,81 +1,81 @@
-import React from 'react'
-import Header from '../components/Header'
-import { Link } from 'react-router-dom'
-import { Card } from 'react-bootstrap'
-import homegif from '../assets/homegif.gif'
-import crm1 from '../assets/crm1.svg'
-import crm2 from '../assets/crm2.svg'
-import crm3 from '../assets/crm3.svg'
-import Footer from '../components/Footer'
+import React from "react";
+import Header from "../components/Header";
+import { Link, useNavigate } from "react-router-dom";
+import { Card, Container, Row, Col, Button } from "react-bootstrap";
+import homegif from "../assets/homegif.gif";
+import crm1 from "../assets/crm1.svg";
+import crm2 from "../assets/crm2.svg";
+import crm3 from "../assets/crm3.svg";
+import Footer from "../components/Footer";
+import './home.css'
+
 
 const Home = () => {
+
+  const navigate=useNavigate()
   return (
     <>
-    <Header/>
-    <h1 style={{fontSize:'70px',}} className='text-center m-5'>Small Business CRM App</h1>
-      <div style={{width:'100%',height:"100vh" }}>
-        <div className='row d-flex justify-content-center align-items-center m-5'>
-          <div className='col-lg-6 '>
-          <p style={{fontSize:'20px'}}> At every phase of your business, firsts are always special: your first business idea, your very first customer, the first paycheck you received, and so on. Along those lines, let us introduce you to Bigin, your business's first CRM solution. It's everything your small business needs—simple to use, minimal by design, and affordable for businesses that are just starting out on their path to growth and success.</p>
-          <Link to={'/login'} className='btn btn-warning'>START TO EXPLORE</Link>
-
-          </div>
-          <div className='col-lg-6'>
-            <img src={homegif} alt="no img" width={'500px'}/>
-          </div>
-        </div>
-
-        {/* sub section */}
-      <h3 className='m-5 text-center'>A Sales CRM your Team will Love</h3>
-      <div style={{width:'100%'}} className='row p-5 d-flex justify-content-center align-items-center'>
-        <div className='col-md-4 col-12'>
-          <Card style={{ width: '18rem',height:'350px' }}>
-            <Card.Img height={'160px'}  variant="top" src={crm1} />
-            <Card.Body>
-            <Card.Title>Easy to Use CRM</Card.Title>
-            <Card.Text>
-              Sales CRM is built to be easy to use, even for CRM beginners.Just sign up and get going!
-            </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
-
-        <div className='col-md-4 col-12'>
-          <Card style={{ width: '18rem' ,height:'350px' }}>
-            <Card.Img height={'160px'} variant="top" src={crm2} />
-            <Card.Body>
-            <Card.Title>Expert Help</Card.Title>
-            <Card.Text>
-              CRM offers FREE business expertise to help you make the most of it with timely support to address any issues you may have.
-            </Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
-
-
-        <div className='col-md-4 col-12'>
-          <Card style={{ width: '18rem' ,height:'350px' }}>
-      <Card.Img height={'160px'}  variant="top" src={crm3} />
-      <Card.Body>
-        <Card.Title>Secure Technology</Card.Title>
-        <Card.Text>
-        Sales CRM is built on a solid
-technology stack, so your data is
-in good hands - safe & available
-at all times.
-        </Card.Text>
-      </Card.Body>
-    </Card>
-          </div>
-        </div>
-        <hr style={{ border: "2ox solid #ddd", margin: "20px 0", }} />
-
-        <Footer/>   
+      {/* Header Section */}
+      <Header />
+        <div className="home-page">
+        {/* <h1 className="welcome">Welcome to Smart </h1> */}
+        <p className="para">
+          The ultimate CRM solution designed to help small businesses manage customers, sales, and growth with ease.
+        </p>
+        <br />
+        <Link to={'./register'}>  <button  className="homebtn">Sign in</button>
+        </Link>
    
-     </div>
- 
-    </>
-  )
-}
 
-export default Home
+        
+        </div>
+        
+
+     
+
+      {/* Features Section */}
+      <Container className="text-center my-5">
+        <h3 className="fw-bold">Why Choose Smart CRM?</h3>
+        <Row className="justify-content-center my-4">
+          <Col md={4}>
+            <Card className="shadow-sm p-3">
+              <Card.Img variant="top" src={crm1} height="150px" />
+              <Card.Body>
+                <Card.Title className="fw-bold">Easy to Use</Card.Title>
+                <Card.Text>
+                  Our intuitive interface allows anyone to start using the CRM instantly.
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="shadow-sm p-3">
+              <Card.Img variant="top" src={crm2} height="150px" />
+              <Card.Body>
+                <Card.Title className="fw-bold">Expert Support</Card.Title>
+                <Card.Text>
+                  Get professional assistance whenever you need it, with dedicated support.
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="shadow-sm p-3">
+              <Card.Img variant="top" src={crm3} height="150px" />
+              <Card.Body>
+                <Card.Title className="fw-bold">Secure & Reliable</Card.Title>
+                <Card.Text>
+                  Your data is safe with us—built on a strong technology stack.
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+
+      <Footer />
+    </>
+  );
+};
+
+export default Home;

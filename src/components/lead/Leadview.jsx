@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 
-const LeadView = () => {
+const LeadView = ({insideadmin}) => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get lead ID from URL params
 
@@ -87,9 +87,13 @@ const LeadView = () => {
 
           {/* Close Button (Centered) */}
           <div className="d-flex justify-content-center mt-4">
-            <Button variant="secondary" onClick={() => navigate("/lead")}>
-              Close
-            </Button>
+             <Button
+                variant="secondary"
+                className="w-25"
+                onClick={() => navigate(insideadmin ?  "/user/lead" :"/lead")}
+              >
+                Cancel
+              </Button>
           </div>
         </Card.Body>
       </Card>

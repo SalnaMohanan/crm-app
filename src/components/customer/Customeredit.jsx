@@ -3,7 +3,7 @@ import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 
 
-const Customeredit = () => {
+const Customeredit = ({insideadmin}) => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get lead ID from URL params
 
@@ -228,15 +228,23 @@ const Customeredit = () => {
       {/* Centered Submit & Cancel Buttons */}
       <Row className="mt-3 d-flex justify-content-center">
         <Col md={4}>
-          <Button variant="primary" type="submit" className="w-100">
-            Save Changes
-          </Button>
+            <Button
+            variant="secondary"
+            className="w-100"
+          onClick={() => navigate(insideadmin ?  "/user/customer" :"/customer")}>
+                 Save change
+              </Button>
         </Col>
         <Col md={4}>
-          <Button variant="secondary" className="w-100" onClick={() => navigate("/customer")}>
-            Cancel
-          </Button>
-        </Col>
+  <Button
+    variant="secondary"
+    className="w-100"
+    onClick={() => navigate(insideadmin ? "/user/customer" : "/customer")}
+  >
+    Cancel
+  </Button>
+</Col>
+
       </Row>
     </Form>
     </Card>

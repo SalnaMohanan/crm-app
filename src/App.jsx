@@ -1,9 +1,9 @@
 import './bootstrap.min.css'
 import './App.css'
-import Header from './components/Header'
-import Auth from './pages/Auth'
 import Home from './pages/Home'
-import Dashboard from './pages/Dashboard'
+import AdminDashboard from './pages/AdminDashboard'
+import UserDashboard from './pages/UserDashboard'
+
 import { Route, Routes } from 'react-router-dom'
 import Campaign from './pages/Campaign'
 import Add from './components/campaign/Add'
@@ -20,6 +20,9 @@ import Customer from './pages/Customer'
 import Customeradd from './components/customer/Customeradd'
 import Customeredit from './components/customer/Customeredit'
 import Customerview from './components/customer/Customerview'
+import FeaturesPricing from './components/FeaturesPricing'
+import Contact from './components/Contact'
+import Auth from './pages/Auth'
 
 
 function App() {
@@ -27,27 +30,66 @@ function App() {
   return (
     <>
       {/* <Header/> */}
-      <Routes>
+<Routes>
         <Route path='/' element={<Home/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path="/features-pricing" element={<FeaturesPricing />} />
+
+        <Route path='/admindashboard' element={<AdminDashboard insideadmin={true}/>}/>
+        <Route path='/userdashboard' element={<UserDashboard />}/>
+
         <Route path='/login' element={<Auth/>}/>
         <Route path='/register' element={<Auth insideRegister={true}/>}/>
-        <Route path='/campaign' element={<Campaign/>}/>
-        <Route path='/campadd' element={<Add/>}/>
-        <Route path='/campview' element={<View/>}/>
-        <Route path='/campedit' element={<Edit/>}/>
-        <Route path='/lead' element={<Lead/>}/>
-        <Route path='/leadadd' element={<Leadadd/>}/>
-        <Route path='/leadview' element={<Leadview/>}/>
-        <Route path='/leadedit' element={<Leadedit/>}/>
-        <Route path='/followup' element={<Followup/>}/>
-        <Route path='/followupadd' element={<Followadd/>}/>
-        <Route path='/followupview' element={<Followview/>}/>
-        <Route path='/customer' element={<Customer/>}/>
-        <Route path='/customeradd' element={<Customeradd/>}/>
-        <Route path='/customeredit' element={<Customeredit/>}/>
-        <Route path='/customerview' element={<Customerview/>}/>
 
+        <Route path='/campaign' element={<Campaign insideadmin={true}/>}/>
+        <Route path="/user/campaign" element={<Campaign insideadmin={false} />}/> 
+
+        <Route path='/lead' element={<Lead insideadmin={true}/>}/>
+        <Route path="/user/lead" element={<Lead insideadmin={false}/>}/>
+
+        <Route path='/followup' element={<Followup insideadmin={true}/>}/>
+        <Route path='/user/followup' element={<Followup insideadmin={false}/>}/>
+
+        <Route path='/customer' element={<Customer insideadmin={true}/>}/>
+        <Route path='/user/customer' element={<Customer insideadmin={false}/>}/>
+
+        <Route path='/campadd' element={<Add/>}/>
+
+       
+
+
+        <Route path="/campview/:id" element={<View insideadmin={true} />} />
+<Route path="/campview/:id" element={<View insideadmin={false} />} />
+
+
+
+
+
+        <Route path='/campedit/:id' element={<Edit insideadmin={true}/>}/>
+        <Route path='/campedit/:id' element={<Edit insideadmin={false}/>}/>
+
+        <Route path='/leadadd' element={<Leadadd/>}/>
+        <Route path='/leadadd' element={<Leadadd/>}/>
+
+        <Route path='/leadview' element={<Leadview insideadmin={true}/>}/>
+        <Route path='/leadview' element={<Leadview/>}/>
+
+        <Route path='/leadedit' element={<Leadedit/>}/>
+        <Route path='/leadedit' element={<Leadedit/>}/>
+
+
+        <Route path='/followupadd' element={<Followadd/>}/>
+        <Route path='/followupview' element={<Followview insideadmin={true}/>}/>
+        <Route path='/followupview' element={<Followview/>}/>
+
+        
+        <Route path='/customeradd' element={<Customeradd/>}/>
+        <Route path='/customeredit' element={<Customeredit insideadmin={true}/>}/>
+        <Route path='/user/customeredit' element={<Customeredit insideadmin={false}/>}/>
+
+        <Route path='/customerview' element={<Customerview insideadmin={true}/>}/>
+        <Route path='/user/customerview' element={<Customerview insideadmin={false}/>}/>
+
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </>
   )

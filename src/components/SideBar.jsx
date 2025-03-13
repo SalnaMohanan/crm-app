@@ -6,7 +6,7 @@ const SideBar = () => {
   return (
     <>
     
-    <aside className='bg-light text-dark  d-flex flex-column justify-content-center align-items-center'  >
+    <aside className='bg-primary-t text-dark  d-flex flex-column justify-content-center align-items-center'  >
     <img width={'100px'} height={'100px'} className='rounded-circle center m-3' src="https://cdn3.iconfinder.com/data/icons/user-group-black/100/user-upload-512.png" alt="" />
     <Profile/>
     

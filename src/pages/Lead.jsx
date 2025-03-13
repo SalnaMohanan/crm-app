@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { Container, Table, Button } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const LeadTable = () => {
+const LeadTable = ({ insideadmin }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Check if customer was added from location state
   const isConverted = location.state?.converted || false;
 
   const handleConvert = () => {
     navigate("/customeradd", { state: { fromLead: true } });
-  }; 
+  };
+
   const leads = [
     {
       
@@ -22,20 +23,21 @@ const LeadTable = () => {
       status: "",
       assignedTo: "",
     }
+    
   ];
 
   return (
     <Container className="p-4">
-      <div className="p-1"><Link to='/dashboard'><i class="fa-solid fa-arrow-left"></i></Link></div>
+      <h2 className="text-center mb-4 text-primary fw-bold">Lead Management</h2>
 
-      <h2 className="text-center mb-4 text-primary fw-bold"> Lead Management</h2>
-
-      {/* Add Lead Button */}
-      <div className=" mb-3">
-        <Button variant="success" onClick={() => navigate("/leadadd")}>
-          Add New Lead ➕ 
-        </Button>
-      </div>
+      {/* Add Lead Button (Only Admin Can Add) */}
+      {insideadmin && (
+        <div className="mb-3">
+          <Button variant="success" onClick={() => navigate("/leadadd")}>
+            Add New Lead ➕
+          </Button>
+        </div>
+      )}
 
       {/* Leads Table */}
       <Table striped bordered hover responsive className="shadow-sm text-center">
@@ -49,7 +51,7 @@ const LeadTable = () => {
             <th>Status</th>
             <th>Assigned To</th>
             <th>Actions</th>
-            <th>Convert to customer</th>
+            <th>Convert to Customer</th>
           </tr>
         </thead>
         <tbody>
@@ -75,32 +77,49 @@ const LeadTable = () => {
                   {lead.status}
                 </span>
               </td>
-              <td>{lead.assignedTo}</td>
+
+              {/* Assign to column - Disable for users */}
+              <td>
+                {insideadmin ? (
+                  <span>{lead.assignedTo}</span>
+                ) : (
+                  <span className="text-muted">Assigned</span> // Display a label for users
+                )}
+              </td>
+
               <td>
                 <div className="d-flex justify-content-center gap-2">
-                  <Button variant="info" onClick={() => navigate('/leadview')}>
+                  <Button variant="info" onClick={() => navigate("/leadview")}>
                     <i className="fa-solid fa-eye"></i>
                   </Button>
-                  <Button variant="warning" onClick={() => navigate('/leadedit')}>
-                    <i className="fa-solid fa-pen-to-square"></i>
-                  </Button>
-                  <Button variant="danger">
-                    <i className="fa-solid fa-trash"></i>
-                  </Button>
+                  {insideadmin && (
+                    <>
+                      <Button variant="warning" onClick={() => navigate("/leadedit")}>
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </Button>
+                      <Button variant="danger">
+                        <i className="fa-solid fa-trash"></i>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </td>
-              <td>
-              <div className="text-center mt-3">
-      {isConverted ? (
-        <Button variant="success" disabled>
-          Converted
-        </Button>
-      ) : (
-        <Button variant="primary" onClick={handleConvert}>
-          Convert to Customer
-        </Button>
-      )}
-    </div>
+
+              {/* Convert to Customer - Enable for users */}
+              <td className="text-center">
+                {isConverted ? (
+                  <Button variant="success" disabled>
+                    Converted
+                  </Button>
+                ) : insideadmin ? (
+                  <Button variant="primary" onClick={handleConvert}>
+                    Convert to Customer
+                  </Button>
+                ) : (
+                  <Button variant="primary" onClick={handleConvert}>
+                    Convert to Customer
+                  </Button>
+                )}
               </td>
             </tr>
           ))}
@@ -111,3 +130,4 @@ const LeadTable = () => {
 };
 
 export default LeadTable;
+
